@@ -3,7 +3,7 @@
     "description": "Pattern lab.",
     "type": "silverstripe-module",
     "keywords": ["silverstripe", "patterns", "testing"],
-	"license": "BSD-3-Clause",
+    "license": "BSD-3-Clause",
     "authors": [
     {
         "name": "John Milmine",
@@ -13,6 +13,6 @@
     "require":
     {
         "silverstripe/framework": "3.*",
-	    "silverstripe/cms": "3.*"
+	"silverstripe/cms": "3.*"
     }
 }
