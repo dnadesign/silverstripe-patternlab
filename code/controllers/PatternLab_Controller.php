@@ -12,7 +12,7 @@ class PatternLab extends Controller {
 		foreach($manifest->getTemplates() as $template_name => $templateInfo) {
 			if (isset($templateInfo[$project]) && isset($templateInfo[$project]['Patterns'])) {
 				$templateList[$template_name] = array(
-					'Link' => '/patterns/index/' . $template_name,
+					'Link' => 'patterns/index/' . $template_name,
 					'Name' => $this->stripeTemplateName($template_name)
 				);
 			}
