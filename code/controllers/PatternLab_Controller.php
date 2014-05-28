@@ -26,6 +26,10 @@ class PatternLab extends Controller {
 	}
 
 	public function index(SS_HTTPRequest $request) {
+		if (!$this->canView()) {
+			throw new PermissionFailureException();
+		}
+
 		if ($request->latestParam('ID')) {
 			$templates = $this->templateArray();
 			if (isset($templates[$request->latestParam('ID')])) {
@@ -54,4 +58,13 @@ class PatternLab extends Controller {
 	public function getPatterns() {
 		return new ArrayList($this->templateArray());
 	}
+
+	public function canView($member = null) {
+		if (Director::isLive()) {
+			return Permission::check('CMS_ACCESS_CMSMain', 'any', $member);
+		} else {
+			return true;
+		}
+	}
+
 }
