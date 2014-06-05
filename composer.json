@@ -16,6 +16,6 @@
 	"silverstripe/cms": "3.*"
     },
     "extra": {
-        "installer-name": "addressable"
+        "installer-name": "pattern-lab"
     }
 }
