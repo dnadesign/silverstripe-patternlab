@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @package patternlab
+ */
 class PatternLab extends Controller {
 
 	private static $allowed_actions = array(
@@ -7,17 +11,21 @@ class PatternLab extends Controller {
 
 	protected function templateArray() {
 		global $project;
+
 		$manifest = SS_TemplateLoader::instance()->getManifest();
 		$templateList = array();
+		
 		foreach($manifest->getTemplates() as $template_name => $templateInfo) {
 			if (isset($templateInfo[$project]) && isset($templateInfo[$project]['Patterns'])) {
 				$templateList[$template_name] = array(
-					'Link' => 'patterns/index/' . $template_name,
+					'Link' => Director::absoluteBaseUrl() . '/patterns/index/' . $template_name,
 					'Name' => $this->stripeTemplateName($template_name)
 				);
 			}
 		}
+		
 		ksort($templateList);
+		
 		return $templateList;
 	}
 
@@ -37,7 +45,9 @@ class PatternLab extends Controller {
 			}
 		}
 
-		return $this->renderWith(array('Pattern_Index'));
+		return $this->customise(new ArrayData(array(
+			'Content' => $this->renderWith(array('Includes/Pattern_Index'))
+		)));
 	}
 
 	public function getSiteConfig() {
@@ -46,12 +56,15 @@ class PatternLab extends Controller {
 
 	public function getTitle() {
 		$request = $this->getRequest();
+
 		if ($request->latestParam('ID')) {
 			$templates = $this->templateArray();
+	
 			if (isset($templates[$request->latestParam('ID')])) {
 				return $templates[$request->latestParam('ID')]['Name'];
 			}
 		}
+
 		return 'Pattern Lab';
 	}
 
