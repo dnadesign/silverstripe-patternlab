@@ -11,14 +11,18 @@ class PatternLab extends Controller {
 
 	protected function templateArray() {
 		global $project;
-
+		$theme = Config::inst()->get('SSViewer', 'theme');
+		
 		$manifest = SS_TemplateLoader::instance()->getManifest();
 		$templateList = array();
-		
+
 		foreach($manifest->getTemplates() as $template_name => $templateInfo) {
-			if (isset($templateInfo[$project]) && isset($templateInfo[$project]['Patterns'])) {
+			$projectexists = isset($templateInfo[$project]) && isset($templateInfo[$project]['Patterns']);
+			$themeexists = $theme && isset($templateInfo['themes'][$theme]) && isset($templateInfo['themes'][$theme]['Patterns']);
+			//always use project template files, and grab template files if not already used
+			if ($projectexists || ($themeexists && !isset($templateList[$template_name]))) {
 				$templateList[$template_name] = array(
-					'Link' => Director::absoluteBaseUrl() . '/patterns/index/' . $template_name,
+					'Link' => Director::absoluteBaseUrl() . 'patterns/index/' . $template_name,
 					'Name' => $this->stripeTemplateName($template_name)
 				);
 			}
