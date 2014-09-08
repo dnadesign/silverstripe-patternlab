@@ -8,18 +8,6 @@ You can read more about pattern labs here: http://bradfrostweb.com/blog/post/ato
 
 ## Using this module
 
-Simple extend PatternLab_Controller with your name name such as MyPatternLab like so:
-class MyPatternLab extends PatternLab {
-
-}
-
-You can add an init function like your Page.php's init function to ensure they're both including the same CSS and Js.
-
-Add the following to your app.yml file:
-Director:
-  rules:
-    'patterns//$Action/$ID/$Name': 'MyPatternLab'
-
 Create a pattern folder under your templates directory:
 templates
  - Patterns
@@ -32,9 +20,33 @@ templates
 
 These will turn up on the index page automatically at /patterns and you will be able to click through to the pattern which will then render the pattern's template.
 
-As these are not pages <head> tags will need to be included in each file we generally recommend the following:
+As these are not pages `<head>` tags will need to be included in each file we generally recommend the following:
+```
 <% include Head %>
 Some Content
 <% include Foot %>
+```
 
 Use the includes above in your Page.ss to ensure there's consistency in the head markup, doctype etc.
+
+## Custom Lab Controller
+
+Optionally extend `PatternLab_Controller` with a name such as `MyPatternLab` like so:
+```php
+class MyPatternLab extends PatternLab {
+
+}
+```
+
+This lets you add an init function like your Page.php's init function to ensure they're both including the same CSS and Js.
+
+You'll need to create a routes.yml file to override the existing route config:
+```yaml
+---
+name: routes
+After: 'pattern-lab'
+---
+Director:
+  rules:
+    'patterns//$Action/$ID/$Name': 'MyPatternLab'
+```
