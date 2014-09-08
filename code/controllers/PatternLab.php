@@ -22,7 +22,9 @@ class PatternLab extends Controller {
 			//always use project template files, and grab template files if not already used
 			if ($projectexists || ($themeexists && !isset($templateList[$template_name]))) {
 				$templateList[$template_name] = array(
-					'Link' => Director::absoluteBaseUrl() . 'patterns/index/' . $template_name,
+					'Link' => Controller::join_links(
+						Director::absoluteBaseUrl(),'patterns','index',$template_name
+					),
 					'Name' => $this->stripeTemplateName($template_name)
 				);
 			}
