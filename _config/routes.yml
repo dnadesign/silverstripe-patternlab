@@ -1,5 +1,5 @@
 ---
-name: routes
+Name: patternroutes
 ---
 Director:
   rules:
