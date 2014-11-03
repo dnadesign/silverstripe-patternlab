@@ -11,8 +11,13 @@ class PatternLab extends Controller {
 
 	protected function templateArray() {
 		global $project;
-		$theme = Config::inst()->get('SSViewer', 'theme');
-		
+		$config = SiteConfig::current_site_config();
+		if ($config->Theme) {
+			Config::inst()->update('SSViewer', 'theme_enabled', true);
+			Config::inst()->update('SSViewer', 'theme', $config->Theme);
+		}
+		$theme = $config->Theme;
+
 		$manifest = SS_TemplateLoader::instance()->getManifest();
 		$templateList = array();
 
@@ -29,9 +34,9 @@ class PatternLab extends Controller {
 				);
 			}
 		}
-		
+
 		ksort($templateList);
-		
+
 		return $templateList;
 	}
 
@@ -67,7 +72,7 @@ class PatternLab extends Controller {
 
 		if ($request->latestParam('ID')) {
 			$templates = $this->templateArray();
-	
+
 			if (isset($templates[$request->latestParam('ID')])) {
 				return $templates[$request->latestParam('ID')]['Name'];
 			}
