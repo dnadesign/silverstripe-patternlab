@@ -46,7 +46,9 @@ class PatternLab extends Controller {
 
 		if ($request->latestParam('ID')) {
 			$templates = $this->templateArray();
+
 			if (isset($templates[$request->latestParam('ID')])) {
+
 				return $this->renderWith(array($request->latestParam('ID')));
 			}
 		}
