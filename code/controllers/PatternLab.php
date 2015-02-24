@@ -35,8 +35,9 @@ class PatternLab extends Controller {
 			}
 		}
 
+	
 		ksort($templateList);
-
+	
 		return $templateList;
 	}
 
@@ -45,22 +46,57 @@ class PatternLab extends Controller {
 	}
 
 	public function index(SS_HTTPRequest $request) {
-		if (!$this->canView()) {
-			throw new PermissionFailureException();
+		if(!Director::isDev() && !Permission::check('CMS_ACCESS_CMSMain')) {
+			return Security::permissionFailure($this);
 		}
-
+		
 		if ($request->latestParam('ID')) {
 			$templates = $this->templateArray();
 
 			if (isset($templates[$request->latestParam('ID')])) {
+				$next = false;
+				$prev = false;
+				$useNext = false;
 
-				return $this->renderWith(array($request->latestParam('ID')));
+				foreach($templates as $k => $v) {
+					if($useNext) {
+						$next = new ArrayData(array(
+							'Name' => $v['Name'],
+							'Link' => 'patterns/index/'. $k
+						));
+
+						break;
+					}
+
+					if($k == $request->latestParam('ID')) {
+						// mat
+						$useNext = true;
+					} else {
+						$previous = new ArrayData(array(
+							'Name' => $v['Name'],
+							'Link' => 'patterns/index/'. $k
+						));
+					}
+				}
+
+				return $this->customise(new ArrayData(array(
+					'IsPatternLab' => true,
+					'PreviousPattern' => $previous,
+					'NextPattern' => $next,
+					'PatternName' =>$templates[$request->latestParam('ID')]['Name'],
+					'Patterns' => $this->renderWith(array(
+						$templates[$request->latestParam('ID')]['Name']
+					))
+				)))->renderWith(
+					'Page'
+				);
 			}
 		}
 
-		return $this->customise(new ArrayData(array(
-			'Content' => $this->renderWith(array('Includes/Pattern_Index'))
-		)));
+		return $this->renderWith(array(
+			__CLASS__,
+			'Page'
+		));
 	}
 
 	public function getSiteConfig() {
@@ -72,25 +108,15 @@ class PatternLab extends Controller {
 
 		if ($request->latestParam('ID')) {
 			$templates = $this->templateArray();
-
 			if (isset($templates[$request->latestParam('ID')])) {
 				return $templates[$request->latestParam('ID')]['Name'];
 			}
 		}
-
+		
 		return 'Pattern Lab';
 	}
 
 	public function getPatterns() {
 		return new ArrayList($this->templateArray());
 	}
-
-	public function canView($member = null) {
-		if (Director::isLive()) {
-			return Permission::check('CMS_ACCESS_CMSMain', 'any', $member);
-		} else {
-			return true;
-		}
-	}
-
 }

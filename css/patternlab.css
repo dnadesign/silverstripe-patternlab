@@ -1,0 +1,36 @@
+#patternlab_header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: #000;
+	height: 40px;
+	overflow: hidden;
+}
+
+#patternlab_header h1 {
+	color: #fff;
+	font-family: Helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0 10px;
+	line-height: 40px;
+	float: left;
+}
+
+#patternlab_header p {
+	color: #ddd;
+	font-family: Helvetica, arial;
+	font-size: 12px;
+	line-height: 40px;
+	float: right;
+}
+
+#patternlab_header a {
+	color: #ddd;
+	text-decoration: underline;
+}
+
+html {
+	padding-top: 40px;
+}
