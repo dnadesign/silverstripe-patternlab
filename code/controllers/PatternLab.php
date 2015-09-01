@@ -55,7 +55,7 @@ class PatternLab extends Controller {
 
 			if (isset($templates[$request->latestParam('ID')])) {
 				$next = false;
-				$prev = false;
+				$previous = false;
 				$useNext = false;
 
 				foreach($templates as $k => $v) {
