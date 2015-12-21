@@ -25,19 +25,22 @@ class PatternLab extends Controller {
 			$projectexists = isset($templateInfo[$project]) && isset($templateInfo[$project]['Patterns']);
 			$themeexists = $theme && isset($templateInfo['themes'][$theme]) && isset($templateInfo['themes'][$theme]['Patterns']);
 			//always use project template files, and grab template files if not already used
+
 			if ($projectexists || ($themeexists && !isset($templateList[$template_name]))) {
 				$templateList[$template_name] = array(
 					'Link' => Controller::join_links(
 						Director::absoluteBaseUrl(),'patterns','index',$template_name
 					),
-					'Name' => $this->stripeTemplateName($template_name)
+					'Name' => $this->stripeTemplateName($template_name),
+					'Template' => $template_name
 				);
 			}
+
+
 		}
 
-	
 		ksort($templateList);
-	
+
 		return $templateList;
 	}
 
@@ -49,7 +52,7 @@ class PatternLab extends Controller {
 		if(!Director::isDev() && !Permission::check('CMS_ACCESS_CMSMain')) {
 			return Security::permissionFailure($this);
 		}
-		
+
 		if ($request->latestParam('ID')) {
 			$templates = $this->templateArray();
 
@@ -80,12 +83,13 @@ class PatternLab extends Controller {
 				}
 
 				return $this->customise(new ArrayData(array(
+					'ClassName' => 'Pattern',
 					'IsPatternLab' => true,
 					'PreviousPattern' => $previous,
 					'NextPattern' => $next,
 					'PatternName' =>$templates[$request->latestParam('ID')]['Name'],
 					'Patterns' => $this->renderWith(array(
-						$templates[$request->latestParam('ID')]['Name']
+						$templates[$request->latestParam('ID')]['Template']
 					))
 				)))->renderWith(
 					'Page'
@@ -112,7 +116,7 @@ class PatternLab extends Controller {
 				return $templates[$request->latestParam('ID')]['Name'];
 			}
 		}
-		
+
 		return 'Pattern Lab';
 	}
 
