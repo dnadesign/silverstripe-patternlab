@@ -2,6 +2,6 @@
 
 <ul class="list_layout">
 	<% loop Patterns %>
-        <li><a href="$Link">$Name</a></li>
-    <% end_loop %>
+		<li><a href="$Link">$Name</a></li>
+	<% end_loop %>
 </ul>

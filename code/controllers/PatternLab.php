@@ -53,7 +53,7 @@ class PatternLab extends Controller {
 			return Security::permissionFailure($this);
 		}
 
-		if ($request->latestParam('ID')) {
+		if($request->latestParam('ID')) {
 			$templates = $this->templateArray();
 
 			if (isset($templates[$request->latestParam('ID')])) {
@@ -92,7 +92,7 @@ class PatternLab extends Controller {
 						$templates[$request->latestParam('ID')]['Template']
 					))
 				)))->renderWith(
-					'Page'
+					$templates[$request->latestParam('ID')]['Template']
 				);
 			}
 		}
